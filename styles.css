@@ -171,6 +171,67 @@ body {
     background: var(--background);
 }
 
+/* 项目过滤器 */
+.projects-filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--card-background);
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.filter-btn.active {
+    background: var(--gradient);
+    border-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.filter-btn i {
+    font-size: 1rem;
+}
+
+/* 加载更多按钮 */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+#loadMoreBtn {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 25px;
+}
+
 .section-title {
     font-size: 2.5rem;
     font-weight: 700;
@@ -213,11 +274,31 @@ body {
     border-color: var(--primary-color);
 }
 
+.project-card-featured {
+    position: relative;
+    border: 2px solid var(--primary-color);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.02), rgba(118, 75, 162, 0.02));
+}
+
 .project-header {
     display: flex;
     align-items: center;
     gap: 1rem;
     margin-bottom: 1rem;
+    position: relative;
+}
+
+.featured-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: var(--gradient);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    box-shadow: var(--shadow);
 }
 
 .project-icon {
@@ -251,6 +332,24 @@ body {
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.tag[style*="--tag-color"] {
+    background: rgba(var(--tag-color-rgb), 0.1);
+    color: var(--tag-color);
+    border: 1px solid rgba(var(--tag-color-rgb), 0.2);
+}
+
+.tag[style*="--tag-color"]::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--tag-color);
 }
 
 .project-links {
@@ -440,6 +539,19 @@ body {
     
     .projects-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .filter-buttons {
+        gap: 0.5rem;
+    }
+    
+    .filter-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .filter-btn span {
+        display: none;
     }
     
     .about-content {

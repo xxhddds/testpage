@@ -48,156 +48,25 @@
         <section id="projects" class="projects">
             <div class="container">
                 <h2 class="section-title">我的项目</h2>
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <div class="project-header">
-                            <i class="fab fa-github project-icon"></i>
-                            <h3 class="project-title">GitHub项目展示</h3>
-                        </div>
-                        <p class="project-description">
-                            一个现代化的项目展示网站，使用HTML、CSS和JavaScript构建。
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">HTML</span>
-                            <span class="tag">CSS</span>
-                            <span class="tag">JavaScript</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/wedsfew/testpage" class="btn btn-primary" target="_blank">
-                                <i class="fas fa-external-link-alt"></i>
-                                查看项目
-                            </a>
-                            <a href="https://github.com/wedsfew/testpage" class="btn btn-secondary" target="_blank">
-                                <i class="fab fa-github"></i>
-                                源码
-                            </a>
-                        </div>
+                
+                <!-- 项目分类过滤器 -->
+                <div class="projects-filter">
+                    <div class="filter-buttons" id="filterButtons">
+                        <!-- 过滤按钮将由JavaScript动态生成 -->
                     </div>
+                </div>
 
-                    <div class="project-card">
-                        <div class="project-header">
-                            <i class="fas fa-globe project-icon"></i>
-                            <h3 class="project-title">Web应用项目</h3>
-                        </div>
-                        <p class="project-description">
-                            一个功能丰富的Web应用，包含用户认证、数据管理等功能。
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">React</span>
-                            <span class="tag">Node.js</span>
-                            <span class="tag">MongoDB</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-primary">
-                                <i class="fas fa-external-link-alt"></i>
-                                查看项目
-                            </a>
-                            <a href="#" class="btn btn-secondary">
-                                <i class="fab fa-github"></i>
-                                源码
-                            </a>
-                        </div>
-                    </div>
+                <!-- 项目网格容器 -->
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- 项目卡片将由JavaScript动态生成 -->
+                </div>
 
-                    <div class="project-card">
-                        <div class="project-header">
-                            <i class="fas fa-mobile-alt project-icon"></i>
-                            <h3 class="project-title">移动应用</h3>
-                        </div>
-                        <p class="project-description">
-                            跨平台移动应用，提供良好的用户体验和流畅的交互。
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">React Native</span>
-                            <span class="tag">TypeScript</span>
-                            <span class="tag">Firebase</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-primary">
-                                <i class="fas fa-external-link-alt"></i>
-                                查看项目
-                            </a>
-                            <a href="#" class="btn btn-secondary">
-                                <i class="fab fa-github"></i>
-                                源码
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-card">
-                        <div class="project-header">
-                            <i class="fas fa-robot project-icon"></i>
-                            <h3 class="project-title">AI工具项目</h3>
-                        </div>
-                        <p class="project-description">
-                            集成人工智能的工具应用，提供智能化的解决方案。
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">FastAPI</span>
-                            <span class="tag">OpenAI</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-primary">
-                                <i class="fas fa-external-link-alt"></i>
-                                查看项目
-                            </a>
-                            <a href="#" class="btn btn-secondary">
-                                <i class="fab fa-github"></i>
-                                源码
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-card">
-                        <div class="project-header">
-                            <i class="fas fa-database project-icon"></i>
-                            <h3 class="project-title">数据可视化</h3>
-                        </div>
-                        <p class="project-description">
-                            交互式数据可视化平台，帮助用户更好地理解数据。
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Vue.js</span>
-                            <span class="tag">D3.js</span>
-                            <span class="tag">Python</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-primary">
-                                <i class="fas fa-external-link-alt"></i>
-                                查看项目
-                            </a>
-                            <a href="#" class="btn btn-secondary">
-                                <i class="fab fa-github"></i>
-                                源码
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="project-card">
-                        <div class="project-header">
-                            <i class="fas fa-shopping-cart project-icon"></i>
-                            <h3 class="project-title">电商平台</h3>
-                        </div>
-                        <p class="project-description">
-                            全栈电商解决方案，包含商品管理、订单处理、支付集成等功能。
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Next.js</span>
-                            <span class="tag">PostgreSQL</span>
-                            <span class="tag">Stripe</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-primary">
-                                <i class="fas fa-external-link-alt"></i>
-                                查看项目
-                            </a>
-                            <a href="#" class="btn btn-secondary">
-                                <i class="fab fa-github"></i>
-                                源码
-                            </a>
-                        </div>
-                    </div>
+                <!-- 加载更多按钮 -->
+                <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+                    <button class="btn btn-primary" id="loadMoreBtn">
+                        <i class="fas fa-plus"></i>
+                        加载更多项目
+                    </button>
                 </div>
             </div>
         </section>
@@ -282,6 +151,7 @@
         </div>
     </footer>
 
+    <script src="projects-data.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 

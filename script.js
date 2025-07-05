@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollEffects();
     initAnimations();
     initContactForm();
+    initProjectComponents();
 });
 
 // 导航功能
@@ -280,4 +281,323 @@ window.portfolioUtils = {
     animateNumber,
     initAnimations,
     initScrollEffects
-}; 
+};
+
+// =============================================================================
+// 项目组件系统
+// =============================================================================
+
+class ProjectComponent {
+    constructor(container, options = {}) {
+        this.container = container;
+        this.options = {
+            itemsPerPage: 6,
+            enableFilter: true,
+            enableLoadMore: true,
+            animationDelay: 100,
+            ...options
+        };
+        
+        this.projects = projectsData || [];
+        this.currentFilter = 'all';
+        this.currentPage = 1;
+        this.filteredProjects = [];
+        this.displayedProjects = [];
+        
+        this.init();
+    }
+    
+    init() {
+        this.setupFilter();
+        this.filterProjects();
+        this.render();
+        this.bindEvents();
+    }
+    
+    setupFilter() {
+        if (!this.options.enableFilter) return;
+        
+        const filterContainer = document.getElementById('filterButtons');
+        if (!filterContainer) return;
+        
+        const filterButtons = Object.entries(projectCategories).map(([key, category]) => {
+            const activeClass = key === this.currentFilter ? 'active' : '';
+            return `
+                <button class="filter-btn ${activeClass}" data-filter="${key}">
+                    <i class="${category.icon}"></i>
+                    <span>${category.name}</span>
+                </button>
+            `;
+        }).join('');
+        
+        filterContainer.innerHTML = filterButtons;
+    }
+    
+    filterProjects() {
+        if (this.currentFilter === 'all') {
+            this.filteredProjects = [...this.projects];
+        } else {
+            this.filteredProjects = this.projects.filter(project => 
+                project.category === this.currentFilter
+            );
+        }
+        
+        // 重置页面
+        this.currentPage = 1;
+        this.updateDisplayedProjects();
+    }
+    
+    updateDisplayedProjects() {
+        const startIndex = 0;
+        const endIndex = this.currentPage * this.options.itemsPerPage;
+        this.displayedProjects = this.filteredProjects.slice(startIndex, endIndex);
+        
+        // 更新加载更多按钮的显示状态
+        this.updateLoadMoreButton();
+    }
+    
+    updateLoadMoreButton() {
+        const loadMoreContainer = document.getElementById('loadMoreContainer');
+        if (!loadMoreContainer || !this.options.enableLoadMore) return;
+        
+        const hasMore = this.displayedProjects.length < this.filteredProjects.length;
+        loadMoreContainer.style.display = hasMore ? 'block' : 'none';
+    }
+    
+    render() {
+        const projectsHTML = this.displayedProjects.map((project, index) => {
+            return this.createProjectCard(project, index);
+        }).join('');
+        
+        this.container.innerHTML = projectsHTML;
+        
+        // 重新绑定事件
+        this.bindProjectEvents();
+        
+        // 触发动画
+        this.triggerAnimations();
+    }
+    
+    createProjectCard(project, index) {
+        const tags = project.tags.map(tag => {
+            const color = tagColors[tag] || '#667eea';
+            return `<span class="tag" style="--tag-color: ${color}">${tag}</span>`;
+        }).join('');
+        
+        const demoButton = project.demoUrl && project.demoUrl !== '#' ? 
+            `<a href="${project.demoUrl}" class="btn btn-primary" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                查看项目
+            </a>` : '';
+        
+        const sourceButton = project.sourceUrl && project.sourceUrl !== '#' ? 
+            `<a href="${project.sourceUrl}" class="btn btn-secondary" target="_blank">
+                <i class="fab fa-github"></i>
+                源码
+            </a>` : '';
+        
+        const featuredClass = project.featured ? 'project-card-featured' : '';
+        
+        return `
+            <div class="project-card ${featuredClass}" data-project-id="${project.id}" data-category="${project.category}" style="animation-delay: ${index * this.options.animationDelay}ms">
+                <div class="project-header">
+                    <i class="${project.icon} project-icon"></i>
+                    <h3 class="project-title">${project.title}</h3>
+                    ${project.featured ? '<span class="featured-badge">精选</span>' : ''}
+                </div>
+                <p class="project-description">${project.description}</p>
+                <div class="project-tags">
+                    ${tags}
+                </div>
+                <div class="project-links">
+                    ${demoButton}
+                    ${sourceButton}
+                </div>
+            </div>
+        `;
+    }
+    
+    bindEvents() {
+        // 过滤按钮事件
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const filter = button.dataset.filter;
+                this.setFilter(filter);
+                
+                // 更新按钮状态
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+        
+        // 加载更多按钮事件
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                this.loadMore();
+            });
+        }
+    }
+    
+    bindProjectEvents() {
+        // 项目卡片交互
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // 按钮点击效果
+        const buttons = document.querySelectorAll('.project-card .btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // 创建涟漪效果
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    }
+    
+    triggerAnimations() {
+        // 为新添加的卡片触发动画
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease-out';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * this.options.animationDelay);
+        });
+    }
+    
+    setFilter(filter) {
+        this.currentFilter = filter;
+        this.filterProjects();
+        this.render();
+    }
+    
+    loadMore() {
+        this.currentPage++;
+        this.updateDisplayedProjects();
+        
+        // 只渲染新的项目
+        const newProjects = this.filteredProjects.slice(
+            (this.currentPage - 1) * this.options.itemsPerPage,
+            this.currentPage * this.options.itemsPerPage
+        );
+        
+        const newProjectsHTML = newProjects.map((project, index) => {
+            return this.createProjectCard(project, this.displayedProjects.length - newProjects.length + index);
+        }).join('');
+        
+        this.container.insertAdjacentHTML('beforeend', newProjectsHTML);
+        
+        // 重新绑定事件
+        this.bindProjectEvents();
+        
+        // 触发新项目的动画
+        const newCards = this.container.querySelectorAll('.project-card:nth-last-child(-n+' + newProjects.length + ')');
+        newCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease-out';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * this.options.animationDelay);
+        });
+        
+        this.updateLoadMoreButton();
+    }
+    
+    // 公共方法：添加新项目
+    addProject(project) {
+        this.projects.push(project);
+        this.filterProjects();
+        this.render();
+    }
+    
+    // 公共方法：更新项目
+    updateProject(projectId, updatedProject) {
+        const index = this.projects.findIndex(p => p.id === projectId);
+        if (index !== -1) {
+            this.projects[index] = { ...this.projects[index], ...updatedProject };
+            this.filterProjects();
+            this.render();
+        }
+    }
+    
+    // 公共方法：删除项目
+    removeProject(projectId) {
+        this.projects = this.projects.filter(p => p.id !== projectId);
+        this.filterProjects();
+        this.render();
+    }
+}
+
+// 项目管理工具函数
+const ProjectManager = {
+    instance: null,
+    
+    // 初始化项目组件
+    init() {
+        const container = document.getElementById('projectsGrid');
+        if (container) {
+            this.instance = new ProjectComponent(container);
+        }
+    },
+    
+    // 添加新项目的便捷方法
+    addProject(projectData) {
+        if (this.instance) {
+            this.instance.addProject(projectData);
+        }
+    },
+    
+    // 更新项目的便捷方法
+    updateProject(projectId, updatedData) {
+        if (this.instance) {
+            this.instance.updateProject(projectId, updatedData);
+        }
+    },
+    
+    // 删除项目的便捷方法
+    removeProject(projectId) {
+        if (this.instance) {
+            this.instance.removeProject(projectId);
+        }
+    }
+};
+
+// 初始化项目组件
+function initProjectComponents() {
+    ProjectManager.init();
+}
+
+// 导出项目管理器供全局使用
+window.ProjectManager = ProjectManager; 
