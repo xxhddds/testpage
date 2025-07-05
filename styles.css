@@ -268,11 +268,7 @@ body {
     border: 1px solid var(--border-color);
 }
 
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary-color);
-}
+/* 悬浮效果已移至动画部分，使用!important确保优先级 */
 
 .project-card-featured {
     position: relative;
@@ -610,16 +606,24 @@ body {
     }
 }
 
-.project-card {
-    animation: fadeInUp 0.6s ease forwards;
+/* 项目卡片加载状态 */
+.project-card-loading {
+    opacity: 0;
+    transform: translateY(30px);
 }
 
-.project-card:nth-child(1) { animation-delay: 0.1s; }
-.project-card:nth-child(2) { animation-delay: 0.2s; }
-.project-card:nth-child(3) { animation-delay: 0.3s; }
-.project-card:nth-child(4) { animation-delay: 0.4s; }
-.project-card:nth-child(5) { animation-delay: 0.5s; }
-.project-card:nth-child(6) { animation-delay: 0.6s; }
+.project-card-loaded {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s ease-out;
+}
+
+/* 确保悬浮效果优先级高于加载动画 */
+.project-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: var(--shadow-lg) !important;
+    border-color: var(--primary-color) !important;
+}
 
 /* 滚动条样式 */
 ::-webkit-scrollbar {
