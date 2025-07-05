@@ -14,22 +14,28 @@ function initNavigation() {
     
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
+            const href = this.getAttribute('href');
             
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                // 平滑滚动到目标区域
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            // 只对页面内锚点链接（以#开头）应用平滑滚动
+            // 让外部链接（如project-manager.html）正常跳转
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
                 
-                // 添加活动状态
-                navLinks.forEach(nl => nl.classList.remove('active'));
-                this.classList.add('active');
+                const targetSection = document.querySelector(href);
+                
+                if (targetSection) {
+                    // 平滑滚动到目标区域
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // 添加活动状态
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    this.classList.add('active');
+                }
             }
+            // 对于非锚点链接（如project-manager.html），不阻止默认行为，允许正常跳转
         });
     });
 }
