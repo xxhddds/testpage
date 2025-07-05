@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>悬浮效果测试</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .test-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .test-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+        .test-description {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .comparison h3 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .static-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            /* 没有悬浮效果 */
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .back-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">🎯 项目卡片悬浮效果测试 - 增强版</h1>
+        
+        <div class="test-description">
+            <strong>测试说明:</strong> 将鼠标悬浮在下面的项目卡片上，应该看到增强的悬浮效果：
+            <ul>
+                <li>🚀 向上移动12px + 3%缩放</li>
+                <li>✨ 增强阴影效果（双重阴影）</li>
+                <li>🎨 渐变背景色变化</li>
+                <li>⚡ 更平滑的过渡动画</li>
+            </ul>
+        </div>
+
+        <div class="comparison">
+            <div>
+                <h3>✅ 正常项目卡片 (应该有悬浮效果)</h3>
+                <div class="project-card">
+                    <div class="project-header">
+                        <i class="fas fa-rocket project-icon"></i>
+                        <h3 class="project-title">测试项目</h3>
+                    </div>
+                    <p class="project-description">
+                        这是一个测试项目卡片，应该有悬浮效果。将鼠标移动到这个卡片上试试。
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Test</span>
+                        <span class="tag">Hover</span>
+                        <span class="tag">Effect</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i>
+                            查看项目
+                        </a>
+                        <a href="#" class="btn btn-secondary">
+                            <i class="fab fa-github"></i>
+                            源码
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3>❌ 静态卡片 (没有悬浮效果作为对比)</h3>
+                <div class="static-card">
+                    <div class="project-header">
+                        <i class="fas fa-ban project-icon"></i>
+                        <h3 class="project-title">静态项目</h3>
+                    </div>
+                    <p class="project-description">
+                        这是一个静态卡片，没有悬浮效果，用于对比。
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Static</span>
+                        <span class="tag">No Hover</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i>
+                            查看项目
+                        </a>
+                        <a href="#" class="btn btn-secondary">
+                            <i class="fab fa-github"></i>
+                            源码
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-description">
+            <strong>预期效果:</strong>
+            <ul>
+                <li>✅ 左侧卡片：鼠标悬浮时向上移动(-12px) + 3%缩放，双重阴影，渐变背景，边框变为主色调</li>
+                <li>❌ 右侧卡片：鼠标悬浮时无任何变化</li>
+                <li>🎯 按钮：点击时有涟漪效果</li>
+                <li>⚡ 动画：更平滑的0.4s过渡动画</li>
+            </ul>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html">← 返回主页</a> | 
+            <a href="example-add-project.html">添加项目示例</a>
+        </div>
+    </div>
+
+    <script src="projects-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -133,16 +133,7 @@ function initContactForm() {
     });
 }
 
-// 项目卡片交互
-document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.02)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-});
+// 项目卡片交互已移至组件内部处理
 
 // 按钮点击效果
 document.querySelectorAll('.btn').forEach(btn => {
@@ -442,19 +433,7 @@ class ProjectComponent {
     }
     
     bindProjectEvents() {
-        // 项目卡片交互
-        const projectCards = document.querySelectorAll('.project-card');
-        projectCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-        
-        // 按钮点击效果
+        // 按钮点击效果（保留涟漪效果）
         const buttons = document.querySelectorAll('.project-card .btn');
         buttons.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -483,13 +462,12 @@ class ProjectComponent {
         // 为新添加的卡片触发动画
         const cards = document.querySelectorAll('.project-card');
         cards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
+            // 使用CSS类而不是内联样式
+            card.classList.add('project-card-loading');
             
             setTimeout(() => {
-                card.style.transition = 'all 0.6s ease-out';
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
+                card.classList.remove('project-card-loading');
+                card.classList.add('project-card-loaded');
             }, index * this.options.animationDelay);
         });
     }
@@ -522,13 +500,12 @@ class ProjectComponent {
         // 触发新项目的动画
         const newCards = this.container.querySelectorAll('.project-card:nth-last-child(-n+' + newProjects.length + ')');
         newCards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
+            // 使用CSS类而不是内联样式
+            card.classList.add('project-card-loading');
             
             setTimeout(() => {
-                card.style.transition = 'all 0.6s ease-out';
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
+                card.classList.remove('project-card-loading');
+                card.classList.add('project-card-loaded');
             }, index * this.options.animationDelay);
         });
         
