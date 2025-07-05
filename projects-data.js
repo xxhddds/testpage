@@ -65,17 +65,6 @@ const projectsData = [
         sourceUrl: '#',
         featured: true,
         category: 'ecommerce'
-    },
-    {
-        id: 'ecommerce',
-        title: '1',
-        icon: 'fas fa-shopping-cart',
-        description: '11111',
-        tags: ['Next.js', 'PostgreSQL', 'Stripe'],
-        demoUrl: '#',
-        sourceUrl: '#',
-        featured: true,
-        category: 'ecommerce'
     }
 ];
 
