@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加项目示例</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f7fafc;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .preview {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .tag {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        .link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 添加新项目示例</h1>
+        <p>这个页面展示了如何使用新的组件系统添加项目。填写下面的表单，然后点击"添加项目"按钮。</p>
+        
+        <form id="projectForm">
+            <div class="form-group">
+                <label for="projectId">项目ID *</label>
+                <input type="text" id="projectId" placeholder="例如: my-awesome-project" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="projectTitle">项目标题 *</label>
+                <input type="text" id="projectTitle" placeholder="例如: 我的超棒项目" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="projectIcon">图标类名 *</label>
+                <input type="text" id="projectIcon" placeholder="例如: fas fa-rocket" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="projectDescription">项目描述 *</label>
+                <textarea id="projectDescription" placeholder="简要描述你的项目..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="projectTags">技术栈标签</label>
+                <input type="text" id="projectTags" placeholder="用逗号分隔，例如: React, TypeScript, Node.js">
+            </div>
+            
+            <div class="form-group">
+                <label for="projectDemo">演示链接</label>
+                <input type="url" id="projectDemo" placeholder="https://your-demo-link.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="projectSource">源码链接</label>
+                <input type="url" id="projectSource" placeholder="https://github.com/username/repo">
+            </div>
+            
+            <div class="form-group">
+                <label for="projectCategory">项目分类 *</label>
+                <select id="projectCategory" required>
+                    <option value="">选择分类</option>
+                    <option value="web">前端</option>
+                    <option value="fullstack">全栈</option>
+                    <option value="mobile">移动端</option>
+                    <option value="ai">AI/ML</option>
+                    <option value="data">数据</option>
+                    <option value="ecommerce">电商</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="projectFeatured"> 设为精选项目
+                </label>
+            </div>
+            
+            <button type="submit" class="btn">添加项目</button>
+            <button type="button" class="btn" onclick="generateCode()">生成代码</button>
+            <button type="button" class="btn" onclick="resetForm()">重置表单</button>
+        </form>
+        
+        <div class="preview" id="codePreview" style="display: none;">
+            <h3>📝 生成的代码</h3>
+            <pre id="generatedCode"></pre>
+        </div>
+        
+        <div id="successMessage" class="success" style="display: none;"></div>
+        
+        <div style="margin-top: 30px;">
+            <h3>🔗 相关链接</h3>
+            <p>
+                <a href="index.html" class="link">← 返回主页</a> |
+                <a href="README-components.md" class="link">📚 组件文档</a> |
+                <a href="projects-data.js" class="link">📄 数据文件</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('projectForm');
+        const successMessage = document.getElementById('successMessage');
+        const codePreview = document.getElementById('codePreview');
+        const generatedCode = document.getElementById('generatedCode');
+
+        function generateProjectData() {
+            const formData = new FormData(form);
+            const tags = document.getElementById('projectTags').value
+                .split(',')
+                .map(tag => tag.trim())
+                .filter(tag => tag.length > 0);
+
+            return {
+                id: document.getElementById('projectId').value,
+                title: document.getElementById('projectTitle').value,
+                icon: document.getElementById('projectIcon').value,
+                description: document.getElementById('projectDescription').value,
+                tags: tags,
+                demoUrl: document.getElementById('projectDemo').value || '#',
+                sourceUrl: document.getElementById('projectSource').value || '#',
+                featured: document.getElementById('projectFeatured').checked,
+                category: document.getElementById('projectCategory').value
+            };
+        }
+
+        function generateCode() {
+            const projectData = generateProjectData();
+            const code = `// 方法1: 在 projects-data.js 中添加
+const newProject = ${JSON.stringify(projectData, null, 4)};
+
+// 添加到 projectsData 数组
+projectsData.push(newProject);
+
+// 方法2: 使用 JavaScript API
+ProjectManager.addProject(${JSON.stringify(projectData, null, 4)});`;
+
+            generatedCode.textContent = code;
+            codePreview.style.display = 'block';
+        }
+
+        function resetForm() {
+            form.reset();
+            successMessage.style.display = 'none';
+            codePreview.style.display = 'none';
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!form.checkValidity()) {
+                return;
+            }
+
+            const projectData = generateProjectData();
+            
+            // 模拟添加项目（在实际应用中，这里会调用 ProjectManager.addProject）
+            console.log('添加项目:', projectData);
+            
+            successMessage.innerHTML = `
+                <strong>✅ 项目添加成功！</strong><br>
+                项目ID: ${projectData.id}<br>
+                项目标题: ${projectData.title}<br>
+                <small>在实际应用中，这个项目现在会显示在主页上。</small>
+            `;
+            successMessage.style.display = 'block';
+            
+            // 生成代码
+            generateCode();
+            
+            // 滚动到成功消息
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 表单验证
+        document.getElementById('projectId').addEventListener('input', function() {
+            // 自动转换为小写并替换空格为连字符
+            this.value = this.value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        });
+    </script>
+</body>
+</html> 
