@@ -102,6 +102,27 @@ body {
     width: 100%;
 }
 
+/* 管理链接特殊样式 */
+.nav-link-manage {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white !important;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.nav-link-manage:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    color: white !important;
+}
+
+.nav-link-manage::after {
+    display: none; /* 隐藏下划线效果 */
+}
+
 /* 主内容 */
 .main {
     padding-top: 80px;

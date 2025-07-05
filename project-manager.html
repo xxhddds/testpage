@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目管理 - 我的项目展示网站</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .manager-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .manager-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .manager-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .manager-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .action-btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .action-btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .action-btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .action-btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .form-section {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .form-section h2 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .tag-input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tag-input {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .tag-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            min-height: 40px;
+        }
+        
+        .tag-preview .tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+        
+        .tag-preview .tag:hover {
+            background: var(--secondary-color);
+        }
+        
+        .projects-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .project-item {
+            background: var(--card-background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .project-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-info p {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .project-actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-btn {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .edit-btn:hover,
+        .delete-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .file-input-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .file-input-container input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .status-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .back-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .manager-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="manager-container">
+        <div class="manager-header">
+            <h1><i class="fas fa-cogs"></i> 项目管理系统</h1>
+            <p>添加、编辑、删除和管理你的项目展示</p>
+        </div>
+        
+        <div class="manager-actions">
+            <button class="action-btn action-btn-primary" onclick="showAddForm()">
+                <i class="fas fa-plus"></i>
+                添加新项目
+            </button>
+            <button class="action-btn action-btn-success" onclick="exportData()">
+                <i class="fas fa-download"></i>
+                导出数据
+            </button>
+            <div class="file-input-container">
+                <button class="action-btn action-btn-info">
+                    <i class="fas fa-upload"></i>
+                    导入数据
+                </button>
+                <input type="file" id="importFile" accept=".js,.json" onchange="importData(event)">
+            </div>
+            <button class="action-btn action-btn-secondary" onclick="resetData()">
+                <i class="fas fa-refresh"></i>
+                重置为默认
+            </button>
+        </div>
+        
+        <div id="statusMessage" class="status-message hidden"></div>
+        
+        <!-- 添加/编辑项目表单 -->
+        <div id="projectForm" class="form-section hidden">
+            <h2>
+                <i class="fas fa-edit"></i>
+                <span id="formTitle">添加新项目</span>
+            </h2>
+            
+            <form id="projectEditForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projectId">项目ID *</label>
+                        <input type="text" id="projectId" name="id" required placeholder="unique-project-id">
+                        <small>唯一标识符，只能包含字母、数字、连字符</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectTitle">项目标题 *</label>
+                        <input type="text" id="projectTitle" name="title" required placeholder="我的项目">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectDescription">项目描述 *</label>
+                    <textarea id="projectDescription" name="description" required placeholder="项目的详细描述..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projectCategory">项目分类 *</label>
+                        <select id="projectCategory" name="category" required>
+                            <option value="">请选择分类</option>
+                            <option value="frontend">前端</option>
+                            <option value="fullstack">全栈</option>
+                            <option value="mobile">移动端</option>
+                            <option value="ai">AI/ML</option>
+                            <option value="data">数据</option>
+                            <option value="ecommerce">电商</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectIcon">图标类名</label>
+                        <input type="text" id="projectIcon" name="icon" placeholder="fas fa-code">
+                        <small>Font Awesome图标类名</small>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectTags">技术标签</label>
+                    <div class="tag-input-container">
+                        <input type="text" id="projectTags" class="tag-input" placeholder="输入技术标签，按Enter添加">
+                        <button type="button" onclick="addTag()">添加标签</button>
+                    </div>
+                    <div id="tagPreview" class="tag-preview"></div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projectDemoUrl">演示链接</label>
+                        <input type="url" id="projectDemoUrl" name="demoUrl" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectGithubUrl">GitHub链接</label>
+                        <input type="url" id="projectGithubUrl" name="githubUrl" placeholder="https://github.com/user/repo">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projectFeatured">精选项目</label>
+                        <select id="projectFeatured" name="featured">
+                            <option value="false">否</option>
+                            <option value="true">是</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectStatus">项目状态</label>
+                        <select id="projectStatus" name="status">
+                            <option value="completed">已完成</option>
+                            <option value="in-progress">进行中</option>
+                            <option value="maintenance">维护中</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="action-btn action-btn-primary">
+                        <i class="fas fa-save"></i>
+                        <span id="submitButtonText">保存项目</span>
+                    </button>
+                    <button type="button" class="action-btn action-btn-secondary" onclick="hideAddForm()">
+                        <i class="fas fa-times"></i>
+                        取消
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- 项目列表 -->
+        <div class="form-section">
+            <h2>
+                <i class="fas fa-list"></i>
+                项目列表 (<span id="projectCount">0</span>)
+            </h2>
+            <div id="projectsList" class="projects-list">
+                <!-- 项目列表将动态生成 -->
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← 返回主页</a>
+        </div>
+    </div>
+    
+    <!-- 确认删除模态框 -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>确认删除</h3>
+                <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <p>确定要删除项目 "<span id="deleteProjectTitle"></span>" 吗？</p>
+            <p><strong>此操作不可撤销！</strong></p>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="action-btn action-btn-danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i>
+                    确认删除
+                </button>
+                <button class="action-btn action-btn-secondary" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="projects-data.js"></script>
+    <script src="project-manager.js"></script>
+</body>
+</html> 

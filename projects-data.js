@@ -1,5 +1,8 @@
-// 项目数据配置
-const projectsData = [
+// 项目数据配置文件
+// 支持localStorage数据持久化 - 优先使用localStorage数据
+
+// 默认项目数据
+const defaultProjectsData = [
     {
         id: 'github-portfolio',
         title: 'GitHub项目展示',
@@ -7,9 +10,10 @@ const projectsData = [
         description: '一个现代化的项目展示网站，使用HTML、CSS和JavaScript构建。',
         tags: ['HTML', 'CSS', 'JavaScript'],
         demoUrl: 'https://github.com/wedsfew/testpage',
-        sourceUrl: 'https://github.com/wedsfew/testpage',
+        githubUrl: 'https://github.com/wedsfew/testpage',
         featured: true,
-        category: 'web'
+        category: 'frontend',
+        status: 'completed'
     },
     {
         id: 'web-app',
@@ -18,9 +22,10 @@ const projectsData = [
         description: '一个功能丰富的Web应用，包含用户认证、数据管理等功能。',
         tags: ['React', 'Node.js', 'MongoDB'],
         demoUrl: '#',
-        sourceUrl: '#',
+        githubUrl: '#',
         featured: true,
-        category: 'fullstack'
+        category: 'fullstack',
+        status: 'completed'
     },
     {
         id: 'mobile-app',
@@ -29,9 +34,10 @@ const projectsData = [
         description: '跨平台移动应用，提供良好的用户体验和流畅的交互。',
         tags: ['React Native', 'TypeScript', 'Firebase'],
         demoUrl: '#',
-        sourceUrl: '#',
+        githubUrl: '#',
         featured: false,
-        category: 'mobile'
+        category: 'mobile',
+        status: 'completed'
     },
     {
         id: 'ai-tool',
@@ -40,9 +46,10 @@ const projectsData = [
         description: '集成人工智能的工具应用，提供智能化的解决方案。',
         tags: ['Python', 'FastAPI', 'OpenAI'],
         demoUrl: '#',
-        sourceUrl: '#',
+        githubUrl: '#',
         featured: true,
-        category: 'ai'
+        category: 'ai',
+        status: 'completed'
     },
     {
         id: 'data-visualization',
@@ -51,33 +58,35 @@ const projectsData = [
         description: '交互式数据可视化平台，帮助用户更好地理解数据。',
         tags: ['Vue.js', 'D3.js', 'Python'],
         demoUrl: '#',
-        sourceUrl: '#',
+        githubUrl: '#',
         featured: false,
-        category: 'data'
+        category: 'data',
+        status: 'completed'
     },
     {
-        id: 'ecommerce',
+        id: 'ecommerce-platform',
         title: '电商平台',
         icon: 'fas fa-shopping-cart',
         description: '全栈电商解决方案，包含商品管理、订单处理、支付集成等功能。',
         tags: ['Next.js', 'PostgreSQL', 'Stripe'],
         demoUrl: '#',
-        sourceUrl: '#',
+        githubUrl: '#',
         featured: true,
-        category: 'ecommerce'
+        category: 'ecommerce',
+        status: 'completed'
     }
 ];
 
 // 项目分类配置
-const projectCategories = {
-    all: { name: '全部', icon: 'fas fa-th' },
-    web: { name: '前端', icon: 'fas fa-code' },
-    fullstack: { name: '全栈', icon: 'fas fa-server' },
-    mobile: { name: '移动端', icon: 'fas fa-mobile-alt' },
-    ai: { name: 'AI/ML', icon: 'fas fa-robot' },
-    data: { name: '数据', icon: 'fas fa-chart-bar' },
-    ecommerce: { name: '电商', icon: 'fas fa-shopping-cart' }
-};
+const projectCategories = [
+    { id: 'all', name: '全部', icon: 'fas fa-th' },
+    { id: 'frontend', name: '前端', icon: 'fas fa-code' },
+    { id: 'fullstack', name: '全栈', icon: 'fas fa-server' },
+    { id: 'mobile', name: '移动端', icon: 'fas fa-mobile-alt' },
+    { id: 'ai', name: 'AI/ML', icon: 'fas fa-robot' },
+    { id: 'data', name: '数据', icon: 'fas fa-chart-bar' },
+    { id: 'ecommerce', name: '电商', icon: 'fas fa-shopping-cart' }
+];
 
 // 技能栈颜色配置
 const tagColors = {
@@ -100,7 +109,36 @@ const tagColors = {
     'Stripe': '#635bff'
 };
 
-// 导出数据
+// 数据加载函数 - 优先从localStorage加载
+function loadProjectsData() {
+    try {
+        const localData = localStorage.getItem('projectsData');
+        if (localData) {
+            const parsed = JSON.parse(localData);
+            return parsed.projects || defaultProjectsData;
+        }
+    } catch (error) {
+        console.warn('加载localStorage数据失败，使用默认数据:', error);
+    }
+    return defaultProjectsData;
+}
+
+// 全局数据对象
+window.projectsData = {
+    projects: loadProjectsData(),
+    categories: projectCategories,
+    tagColors: tagColors
+};
+
+// 兼容性导出 - 支持旧版本的引用方式
+window.projectsData.projectsData = window.projectsData.projects;
+window.projectsData.projectCategories = projectCategories;
+
+// Node.js 模块导出（如果需要）
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { projectsData, projectCategories, tagColors };
+    module.exports = {
+        projects: window.projectsData.projects,
+        categories: projectCategories,
+        tagColors: tagColors
+    };
 } 
